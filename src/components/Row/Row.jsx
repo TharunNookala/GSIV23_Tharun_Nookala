@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { getMovies } from '../../store/movieSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Row = ({ rowID, title }) => {
+const Row = ({ title }) => {
 
     const dispatch = useDispatch();
     const { data: movies, search } = useSelector(state => state.movies)
@@ -12,15 +12,15 @@ const Row = ({ rowID, title }) => {
     useEffect(() => {
         dispatch(getMovies())
     }, [dispatch]);
-
-    const sortedMovies = movies.slice().sort((a, b) =>
+    // console.log("movies: ", movies)
+    const sortedMovies = movies?.slice().sort((a, b) =>
         new Date(b.releaseDate) - new Date(a.releaseDate)
     );
-    const filteredMovies = sortedMovies.filter((movie) => movie?.title?.toLowerCase().includes(search.toLowerCase()));
-    console.log("filtered", filteredMovies)
+    const filteredMovies = sortedMovies?.filter((movie) => movie?.title?.toLowerCase().includes(search.toLowerCase()));
+    // console.log("filtered", filteredMovies)
 
     return (
-        <div className='flex flex-col border-2 h-screen'>
+        <div className='flex flex-col border-2 h-full'>
             {console.log(movies)}
             <h2 className='font-bold md:text-xl p-4'>{title}</h2>
             <div className='flex justify-center w-full'>

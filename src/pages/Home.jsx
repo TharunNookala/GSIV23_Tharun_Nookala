@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import Row from '../components/Row/Row'
 import { useDispatch } from 'react-redux';
 import { getMovies } from '../store/movieSlice';
-import Pagination from '../components/Pagination/Pagination';
+// import Pagination from '../components/Pagination/Pagination';
+import InfiniteScroll from '../components/InfiniteScrolling/InfiniteScrolling';
 
 const Home = () => {
     const dispatch = useDispatch()
@@ -14,7 +15,7 @@ const Home = () => {
         <div className='relative'>
             <Row rowID='1' title='Up Coming' />
             <div className='fixed bottom-0 w-screen'>
-                <Pagination />
+                <InfiniteScroll />
             </div>
         </div>
     )
