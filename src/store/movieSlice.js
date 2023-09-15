@@ -1,34 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const requestURL = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_KEY}&language=en-US&page=1`;
-// const requestURL = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_KEY}&language=en-US&page=${pageNumber}`;
-// const fetchURL = `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_KEY}&language=en-US&page=1`;
-// const searchURL = `https://api.themoviedb.org/3/search/movie?query=${search}&api_key=${process.env.REACT_APP_KEY}&language=en-US&page=1`;
-
-
 const initialState = {
     data: [],
-    movie: [],
     id: null,
     search: '',
     currentPage: 1,
     isLoading: false,
 };
 
-
-// export function searchMovies(search) {
-//     return async function searchMoviesThunk(dispatch) {
-//         const response = await axios.get(searchURL)
-//         const data = response.results
-//         dispatch(setSearch(data))
-
-//     }
-// }
-
-
 const movieSlice = createSlice({
-    name: 'getMovie',
+    name: 'movies',
     initialState,
     reducers: {
         fetchMovies(state, action) {
@@ -50,19 +32,19 @@ const movieSlice = createSlice({
     }
 })
 
-export function getMovies(pageNumber) {
-    return async function getMoviesThunk(dispatch) {
+export const getMovies = (pageNumber) => async (dispatch) => {
         dispatch(setLoading(true));
         try {
             const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_KEY}&language=en-US&page=${pageNumber}`)
             const data = response.data.results
             dispatch(fetchMovies(data))
+            dispatch(setCurrentPage(pageNumber));
         }
         finally {
             dispatch(setLoading(false));
         }
     }
-}
+
 export function getMovieById(id) {
     return async function getMoviesThunk(dispatch) {
         dispatch(setLoading(true));
@@ -77,6 +59,6 @@ export function getMovieById(id) {
     }
 }
 
-export default movieSlice.reducer;
 export const { fetchMovies, setSearch, setCurrentPage, setLoading, setMovieById } = movieSlice.actions;
+export default movieSlice.reducer;
 

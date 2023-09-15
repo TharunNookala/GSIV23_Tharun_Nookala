@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
 import Row from '../components/Row/Row'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getMovies } from '../store/movieSlice';
-// import Pagination from '../components/Pagination/Pagination';
 import InfiniteScroll from '../components/InfiniteScrolling/InfiniteScrolling';
 
 const Home = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const { data: movies } = useSelector(state => state.movies)
+
     useEffect(() => {
-        dispatch(getMovies(1));
-    }, [dispatch]);
+        if(movies.length === 0){
+            dispatch(getMovies(1));
+        }
+    }, [dispatch, movies]);
 
     return (
         <div className='relative'>

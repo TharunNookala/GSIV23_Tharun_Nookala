@@ -15,11 +15,14 @@ const Details = () => {
             setMovie(response.data)
         });
         axios.get(creditsURL).then((response) => {
-            setCast(response.data)
-            setCrew(response.data)
+            let detailCast = (response.data.cast).slice(0,3).map((item)=> item.name).join(', ');
+            let detailCrew = (response.data.crew).filter((item)=> item.known_for_department === "Directing");
+            const director = detailCrew[0].name;
+            setCast(detailCast)
+            setCrew(director)
         })
-    }, [id]);
-    // const director = crew.map((item) => item)
+    }, [requestURL,creditsURL]);
+    
     return (
         <section className='flex flex-col sm:flex-row w-screen h-screen gap-2 items-start p-4'>
             <div className='sm:w-[30%] md:w-1/2 h-1/2 lg:h-3/5 p-2 border'>
@@ -27,8 +30,8 @@ const Details = () => {
             </div>
             <div className='p-4 border sm:w-[40%] mt-3 flex-1'>
                 <h2 className='text-lg font-semibold mb-2'>{movie?.title} {movie?.vote_average}</h2>
-                <p>{(movie?.release_date)?.split('-')[0]} | {formatRuntime(movie.runtime)} | {movie?.director}</p>
-                <p>Cast : Actor1, Actor2</p>
+                <p>{(movie?.release_date)?.split('-')[0]} | {formatRuntime(movie.runtime)} | {crew}</p>
+                <p>Cast : {cast} etc...</p>
                 <p>{movie?.overview}</p>
             </div>
         </section>
